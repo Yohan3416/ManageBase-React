@@ -1,0 +1,16 @@
+node_modules/
+
+pnpm-lock.yaml
+
+dist
+public
+.husky
+.vscode
+docs
+*.md
+
+.eslintrc
+.prettierrc
+index.html
+
+vite.config.ts
