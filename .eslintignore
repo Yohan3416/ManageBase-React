@@ -13,4 +13,5 @@ docs
 .prettierrc
 index.html
 
+commitlint.config.cjs
 vite.config.ts
