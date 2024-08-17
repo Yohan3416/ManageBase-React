@@ -2,20 +2,22 @@ import Menu from "antd/es/menu/Menu";
 import { useNavigate } from "react-router-dom";
 import { Layout, ConfigProvider } from "antd";
 import { VideoCameraOutlined } from "@ant-design/icons";
+import { useSettingStore } from "../../../store";
 
 const { Sider } = Layout;
 
 export default function SubSider() {
   const navigate = useNavigate();
+  const SettingStore = useSettingStore();
 
   const subMenuItems = [
     {
-      key: "/department/add",
+      key: "/department/createcount",
       icon: <VideoCameraOutlined />,
       label: " 创建账号",
     },
     {
-      key: "/logrecord",
+      key: "/department/adminauthority",
       icon: <VideoCameraOutlined />,
       label: " 管理员权限",
     },
@@ -42,10 +44,11 @@ export default function SubSider() {
       >
         <Menu
           mode="vertical"
-          defaultSelectedKeys={["/department/add"]}
+          selectedKeys={[SettingStore.SubActiveKey]}
           items={subMenuItems}
           onClick={(e) => {
-            navigate(e.key);
+            SettingStore.updateSubActiveKey(e.key);
+            navigate(e.key, { replace: true });
           }}
         />
       </ConfigProvider>

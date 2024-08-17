@@ -1,14 +1,14 @@
 import Menu from "antd/es/menu/Menu";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Layout } from "antd";
 import { UploadOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { useSettingStore } from "../../../store";
 import SubSider from "./SubSider";
 const { Sider } = Layout;
 
 export default function Siderbar() {
+  const SettingStore = useSettingStore();
   const navigate = useNavigate();
-  const [isOpenSub, setIsOpenSub] = useState(false);
   const items = [
     {
       type: "group",
@@ -75,19 +75,21 @@ export default function Siderbar() {
       >
         <Menu
           mode="vertical"
-          defaultSelectedKeys={["/databoard"]}
           items={items}
+          selectedKeys={[SettingStore.activeKey]}
           onClick={(e) => {
+            SettingStore.updateActiveKey(e.key);
             if (e.key === "/department") {
-              setIsOpenSub(true);
+              SettingStore.updateIsOpenSubMenu(true);
+              SettingStore.updateSubActiveKey("/department/createcount");
             } else {
-              setIsOpenSub(false);
+              SettingStore.updateIsOpenSubMenu(false);
             }
             navigate(e.key, { replace: true });
           }}
         />
       </Sider>
-      {isOpenSub && <SubSider />}
+      {SettingStore.IsOpenSubMenu && <SubSider />}
     </>
   );
 }

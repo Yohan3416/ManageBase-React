@@ -23,5 +23,6 @@ module.exports = {
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "prettier/prettier": ["error", { endOfLine: "auto" }],
+    "@typescript-eslint/no-explicit-any": "off",
   },
 };

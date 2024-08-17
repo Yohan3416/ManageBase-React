@@ -1,36 +1,50 @@
 // 引入zustand库和Immer中间件
 import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
-
-type UserInfo = {
-  username: string;
-  avatar: string;
-};
+import { persist } from "zustand/middleware";
+// import { immer } from "zustand/middleware/immer";
+import { produce } from "immer";
 
 type Action = {
   updateToken: (token: string) => void;
-  updateUserInfo?: (userInfo: UserInfo) => void;
-  updateUserName: (username: string) => void;
+  updateRole: (role: string) => void;
+  updateUserName?: (username: string) => void;
 };
 
 interface State {
+  username: string;
+  role: string;
   token: string;
-  userInfo: UserInfo;
 }
 
-// 创建带有Immer中间件的zustand存储
 export const useUserStore = create<State & Action>()(
   // 这里使用了immer进行包裹住“设置函数”（setter）
-  immer((set) => ({
-    token: "",
-    userInfo: { username: "默认名称", avatar: "http://xxxx.com/yy.jpg" },
-    updateToken: (token) =>
-      set((state) => {
-        state.token = token;
-      }),
-    updateUserName: (username) =>
-      set((state) => {
-        state.userInfo.username = username;
-      }),
-  })),
+  persist(
+    (set) => ({
+      username: "默认名称",
+      role: "admin",
+      token: "",
+      updateToken: (token) =>
+        set(
+          produce((state) => {
+            localStorage.setItem("token", token);
+            state.token = token;
+          }),
+        ),
+      updateRole: (role) =>
+        set(
+          produce((state) => {
+            state.role = role;
+          }),
+        ),
+      updateUsername: (username: string) =>
+        set(
+          produce((state) => {
+            state.username = username;
+          }),
+        ),
+    }),
+    {
+      name: "user-storage",
+    },
+  ),
 );

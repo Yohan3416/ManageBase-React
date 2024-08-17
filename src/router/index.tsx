@@ -5,6 +5,7 @@ import Error403 from "../pages/403.tsx";
 import Error404 from "../pages/404.tsx";
 import LazyComponent from "../components/LazyComponent/LazyComponent.tsx";
 import { lazy } from "react";
+import { Loader } from "./loader.ts";
 
 const routes = [
   {
@@ -14,6 +15,7 @@ const routes = [
 
   {
     path: "/",
+    loader: Loader,
     element: <MyLayout />,
     children: [
       {
@@ -80,17 +82,31 @@ const routes = [
         children: [
           {
             index: true,
-            element: <Navigate to={"/department/add"} />,
+            element: <Navigate to={"/department/createcount"} />,
           },
           {
-            path: "/department/add",
+            path: "/department/createcount",
             element: (
               <LazyComponent
                 lazyChildren={lazy(
                   () =>
-                    import("../pages/LayoutPages/Department/Department.tsx"),
+                    import("../pages/LayoutPages/CreateCount/CreateCount.tsx"),
                 )}
-                title="部门管理"
+                title="创建账号"
+              />
+            ),
+          },
+          {
+            path: "/department/adminauthority",
+            element: (
+              <LazyComponent
+                lazyChildren={lazy(
+                  () =>
+                    import(
+                      "../pages/LayoutPages/AdminAuthority/AdminAuthority.tsx"
+                    ),
+                )}
+                title="管理员权限"
               />
             ),
           },
@@ -128,4 +144,5 @@ const router = createBrowserRouter(routes) as ReturnType<
   typeof createBrowserRouter
 >;
 
+export { routes };
 export default router;
